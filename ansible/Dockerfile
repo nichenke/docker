@@ -2,8 +2,8 @@ FROM python:2.7-alpine
 
 MAINTAINER Nic Henke <nic.henke@versity.com>
 
-RUN apk add --no-cache --virtual .build-deps gcc libc-dev libffi-dev openssl-dev && \
-    apk add --no-cache --virtual .run-deps git && \
+RUN apk add --no-cache --virtual .run-deps git bash openssh libffi rsync && \
+    apk add --no-cache --virtual .build-deps gcc libc-dev libffi-dev openssl-dev && \
     pip install -U --no-cache-dir pip && \
     # Ansible & requirements
     pip install --no-cache-dir ansible simplejson netaddr && \
