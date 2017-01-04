@@ -4,6 +4,8 @@ MAINTAINER Nic Henke <nic.henke@versity.com>
 
 RUN apk add --no-cache --virtual .run-deps git bash openssh libffi rsync && \
     apk add --no-cache --virtual .build-deps gcc libc-dev libffi-dev openssl-dev && \
+    # Add sshpass for ansible bootstrap where we need to use ansible-playbook -k/-K
+    apk add --no-cache sshpass --virtual .ansible-deps && \
     pip install -U --no-cache-dir pip && \
     # pycparser has a bug in 2.15,
     # - cryptography - https://github.com/pyca/cryptography/issues/3187
