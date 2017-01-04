@@ -10,7 +10,7 @@ RUN apk add --no-cache --virtual .run-deps git bash openssh libffi rsync && \
     # - pycparser - https://github.com/eliben/pycparser/issues/151
     pip install pycparser==2.14 && \
     # Ansible & requirements
-    pip install --no-cache-dir ansible simplejson netaddr && \
+    pip install --no-cache-dir ansible simplejson netaddr boto && \
     apk del .build-deps && \
     rm -fr ~/.cache
 
