@@ -1,4 +1,4 @@
-FROM versity-python:2.7
+FROM versity/python:2.7
 
 MAINTAINER Nic Henke <nic.henke@versity.com>
 

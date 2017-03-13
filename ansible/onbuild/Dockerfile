@@ -1,4 +1,4 @@
-FROM versity-ansible:2
+FROM versity/ansible:2
 
 MAINTAINER Nic Henke <nic.henke@versity.com>
 
