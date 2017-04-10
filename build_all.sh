@@ -35,3 +35,8 @@ for pyv in "2.7" "3.6"; do
 
     popd; popd
 done
+
+pushd libarchive
+docker build -t "versity/libarchive:c7-build" .
+docker push "versity/libarchive:c7-build"
+popd
