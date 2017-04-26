@@ -7,11 +7,11 @@ MAINTAINER Nic Henke <nic.henke@versity.com>
 # - note tsflags=nodocs by default, there are actually some docs we want!
 RUN yum --setopt tsflags='' install -y man man-pages git openssh && \
     # we need gcc and friends to build cython modules
-    # attr* for xfs-python and panorama
+    # attr* for panorama
     # linux-headers for just about everyone itseems
     yum install -y gcc glibc-devel && \
     yum --setopt tsflags='' install -y python-devel && \
-    yum --setopt tsflags='' install -y xfsprogs xfsprogs-devel libattr libattr-devel kernel-headers && \
+    yum --setopt tsflags='' install -y libattr libattr-devel kernel-headers && \
     yum clean all && rm -fr /var/cache/*
 
 # Install basic Python tools
