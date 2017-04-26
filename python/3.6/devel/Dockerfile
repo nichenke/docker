@@ -9,7 +9,7 @@ RUN yum --setopt tsflags='' install -y man man-pages git openssh && \
     # we need gcc and friends to build cython modules
     # attr* for panorama
     # linux-headers for just about everyone itseems
-    yum install -y gcc glibc-devel && \
+    yum install -y gcc glibc-devel gcc-c++ && \
     yum --setopt tsflags='' install -y python36u-devel && \
     yum --setopt tsflags='' install -y libattr libattr-devel kernel-headers && \
     yum clean all && rm -fr /var/cache/*
