@@ -1,0 +1,24 @@
+language: bash
+services: docker
+
+env:
+  # onbuild will happen automatically
+  - PROJECT=ansible VARIANT=
+
+install:
+  - git clone https://github.com/nichenke/docker.git ~/docker
+
+before_script:
+  - env | sort
+  - cd "$PROJECT"
+  - image="$(awk '$1 == "FROM" { print $2; exit }' onbuild/Dockerfile)${VARIANT:+-$VARIANT}"
+
+script:
+  - travis_retry docker build -t "$image" "${VARIANT:-.}"
+# the "onbuild" variant has to happen with the base variant because it's FROM it
+  - true && [ "$VARIANT" ] || travis_retry docker build -t "${image}-onbuild" onbuild
+
+after_script:
+  - docker images
+
+# vim:set et ts=2 sw=2:
