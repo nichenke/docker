@@ -1,0 +1,38 @@
+language: bash
+services: docker
+
+env:
+  global:
+    - HUB_REPO=nichenke
+  matrix:
+    # onbuild will happen automatically
+    - PROJECT=ansible TAG=2 VARIANT=
+
+install:
+  - git clone https://github.com/nichenke/docker.git ~/docker
+
+before_script:
+  - env | sort
+  - cd "$PROJECT"
+  - image="$(awk '$1 == "FROM" { print $2; exit }' onbuild/Dockerfile)${VARIANT:+-$VARIANT}"
+
+script:
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+  - travis_retry docker build -t "$image" "${VARIANT:-.}"
+# the "onbuild" variant has to happen with the base variant because it's FROM it
+  - true && [ "$VARIANT" ] || travis_retry docker build -t "${image}-onbuild" onbuild
+# to be removed after folding into versity repos
+  - docker tag "${image}" "$HUB_REPO/$PROJECT:$TAG"
+  - true && [ "$VARIANT" ] || docker tag "${image}-onbuild" "$HUB_REPO/$PROJECT:$TAG"-onbuild
+
+after_script:
+  - docker images
+
+after_success:
+  - if [ "$BRANCH" == "master" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      docker push "$HUB_REPO/$PROJECT";
+    fi
+
+# vim:set et ts=2 sw=2:
